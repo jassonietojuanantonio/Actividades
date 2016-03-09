@@ -6,10 +6,10 @@ namespace Actividad3
 	public class App
 	{
 		public static Page GetMainPage ()
-		{	
+		{
 			return new ContentPage { 
-				Content = new Label {
-					Text = "Hello, Forms!",
+				Content = new Button {
+					Text = "A Jasso",
 					VerticalOptions = LayoutOptions.CenterAndExpand,
 					HorizontalOptions = LayoutOptions.CenterAndExpand,
 				},
@@ -17,4 +17,3 @@ namespace Actividad3
 		}
 	}
 }
-
