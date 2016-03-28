@@ -34,7 +34,7 @@ namespace Actividad5
 						new KeyValuePair<string, string>("password", clave.Text)
 					});
 
-					using (var response = await client.PostAsync("http://127.0.0.0", content)) {
+					using (var response = await client.PostAsync("http://212.47.237.211/login", content)) {
 						using (var responseContent = response.Content) {
 							var result = await responseContent.ReadAsStringAsync();
 							await contentPage.DisplayAlert("Respuesta del servidor",result,"OK","");
