@@ -29,12 +29,13 @@ namespace Actividad5
 			};
 			btnLogin.Clicked += async (object sender, EventArgs e) => {
 				using (var client = new HttpClient()) {
+					client.DefaultRequestHeaders.Accept.Clear();
 					var content = new FormUrlEncodedContent(new[] {
 						new KeyValuePair<string, string>("username", usuario.Text),
 						new KeyValuePair<string, string>("password", clave.Text)
 					});
 
-					using (var response = await client.PostAsync("http://212.47.237.211/login", content)) {
+					using (var response = await client.PostAsync(new Uri("http://192.168.1.254"), content)) {
 						using (var responseContent = response.Content) {
 							var result = await responseContent.ReadAsStringAsync();
 							await contentPage.DisplayAlert("Respuesta del servidor",result,"OK","");
