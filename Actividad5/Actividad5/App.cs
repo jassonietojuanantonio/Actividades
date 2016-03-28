@@ -1,44 +1,52 @@
 ﻿using System;
 using Xamarin.Forms;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace Actividad5
 {
 	public class App
 	{
-		public static Page GetMainPage ()
+		public static NavigationPage GetMainPage ()
 		{	
-			ContentPage contentPage = new ContentPage();
-
-			//Padding agrega un margen al contenido
-			//Device.OnPlatform permite modificar este margen dependiendo de la plataforma IOS, Android y Windows Phone
-			//Para saber más sobe Device.OnPlatform revisa 
-			contentPage.Padding = new Thickness (5, Device.OnPlatform (20, 5, 5), 5, 5);
-
-			//Stacklayout permite apilar los controles verticalmente
-			StackLayout stackLayout = new StackLayout
-			{
-				Children =
-				{
-					new Label
-					{
-						Text = "Blue",
-						TextColor = Color.Blue
-					},
-					new Label
-					{
-						Text = "Silver",
-						TextColor = Color.Silver
-					},
-					new Label
-					{
-						Text = "Black",
-						TextColor = Color.Black
-					}
-				}
+			Entry usuario = new Entry { Placeholder = "Usuario" };
+			Entry clave = new Entry { Placeholder = "Clave", IsPassword = true };
+			Button btnLogin = new Button {
+				Text = "Login",
+				TextColor = Color.White,
+				BackgroundColor = Color.FromHex ("77D065")
 			};
 
-			contentPage.Content = stackLayout;
-			return contentPage;
+			ContentPage contentPage = new ContentPage();
+			contentPage.Content = new StackLayout {
+				Padding = 5,
+				VerticalOptions = LayoutOptions.End,
+				Children = {
+					usuario,
+					clave,
+					btnLogin
+				}
+			};
+			btnLogin.Clicked += async (object sender, EventArgs e) => {
+				using (var client = new HttpClient()) {
+					var content = new FormUrlEncodedContent(new[] {
+						new KeyValuePair<string, string>("username", usuario.Text),
+						new KeyValuePair<string, string>("password", clave.Text)
+					});
+
+					using (var response = await client.PostAsync("http://127.0.0.0", content)) {
+						using (var responseContent = response.Content) {
+							var result = await responseContent.ReadAsStringAsync();
+							await contentPage.DisplayAlert("Respuesta del servidor",result,"OK","");
+
+							var todoPage = new NewPage(); // so the new page shows correct data
+							await contentPage.Navigation.PushAsync(todoPage);
+						}
+					}
+				}
+
+			};
+			return new NavigationPage(contentPage);
 		}
 	}
 }
