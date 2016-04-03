@@ -1,5 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace Actividad9
 {
@@ -16,19 +18,37 @@ namespace Actividad9
 				BackgroundColor = Color.FromHex ("77D065") 
 			};
 
-			boton.Clicked += (sender, e) => {
+			boton.Clicked += async (sender, e) => {
 
-				if(usuario.Text.Equals("usuario")){
-					Navigation.PushAsync(new Contenido());
+				using (var client = new HttpClient ()) {
+					var content = new FormUrlEncodedContent (new[] {
+						new KeyValuePair<string, string> ("username", usuario.Text),
+						new KeyValuePair<string, string> ("password", clave.Text)
+					});
+
+					using (var response = await client.PostAsync ("http://192.168.1.254", content)) {
+						using (var responseContent = response.Content) {
+							var result = await responseContent.ReadAsStringAsync ();
+							string a=result.ToString();
+							if (a.Equals("Si") || a.Equals("si")){
+								await DisplayAlert ("Respuesta del servidor", result, "OK", "");
+								var todoPage = new Contenido (); // so the new page shows correct data
+								await Navigation.PushAsync (todoPage);
+							} else {
+								await DisplayAlert ("Respuesta del servidor", "No aceptado", "OK", "");
+							}
+				
+								
+						}
+					}
 				}
 			};
 
 			//Stacklayout permite apilar los controles verticalmente
 			StackLayout stackLayout = new StackLayout
 			{
-				Spacing = 20, 
-				Padding = 50,
-				VerticalOptions = LayoutOptions.Center,
+				Padding = 5,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
 				Children =
 				{
 					usuario,
