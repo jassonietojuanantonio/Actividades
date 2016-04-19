@@ -13,5 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contenido.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Frutas.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrutasCell.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contenido2.cs" />
   </ItemGroup>
 </Project>

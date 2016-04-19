@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Actividad11
 {
-	public class Contenido: ContentPage
+	public class Contenido2 : ContentPage
 	{
-		public Contenido ()
+		public Contenido2 ()
 		{
 			//El control ListView muestra el contenido en forma de tabla 
 			//Con RowHeight le indicamos el alto de cada renglón
@@ -26,13 +26,12 @@ namespace Actividad11
 				Children = { listView }
 			};
 		}
-
 		public List<Frutas> ObtenListaFrutas()
 		{
 			var lista = new List<Frutas> ();
 
-			lista.Add (new Frutas{Nombre = "Platano", Imagen = "http://www.importancia.org/wp-content/uploads/platano.jpg"});
-			lista.Add (new Frutas{Nombre = "Pina", Imagen = "http://2.bp.blogspot.com/-Bw0n6k40hD0/T-yH2CGcHyI/AAAAAAAAAI8/kZEiZ_sbq2w/s1600/Pi%C3%B1a_con_hojaStevia.jpg"});
+			lista.Add (new Frutas{Nombre = "Fresa", Imagen = "http://tipsdemedicina.com/wp-content/uploads/2013/05/fresas-para-el-acne5.jpg"});
+			lista.Add (new Frutas{Nombre = "Manzana", Imagen = "http://mejorconsalud.com/wp-content/uploads/2014/06/manzanas-378x252.jpg"});
 
 
 			return lista;
@@ -40,4 +39,5 @@ namespace Actividad11
 
 	}
 }
+
 

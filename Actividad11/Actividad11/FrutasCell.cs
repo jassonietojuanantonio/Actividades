@@ -14,7 +14,7 @@ namespace Actividad11
 			};
 
 			imagen.SetBinding(Image.SourceProperty, new Binding("Imagen"));
-			imagen.WidthRequest = imagen.HeightRequest = 40;
+			imagen.WidthRequest = imagen.HeightRequest = 70;
 
 			var nombre = new Label
 			{
