@@ -31,11 +31,11 @@ namespace Actividad5
 				using (var client = new HttpClient()) {
 					client.DefaultRequestHeaders.Accept.Clear();
 					var content = new FormUrlEncodedContent(new[] {
-						new KeyValuePair<string, string>("username", usuario.Text),
+						new KeyValuePair<string, string>("user", usuario.Text),
 						new KeyValuePair<string, string>("password", clave.Text)
 					});
 
-					using (var response = await client.PostAsync(new Uri("http://192.168.1.254"), content)) {
+					using (var response = await client.PostAsync(new Uri("http://104.42.52.205/mobile/login"), content)) {
 						using (var responseContent = response.Content) {
 							var result = await responseContent.ReadAsStringAsync();
 							await contentPage.DisplayAlert("Respuesta del servidor",result,"OK","");
