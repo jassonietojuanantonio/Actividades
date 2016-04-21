@@ -22,15 +22,15 @@ namespace Actividad9
 
 				using (var client = new HttpClient ()) {
 					var content = new FormUrlEncodedContent (new[] {
-						new KeyValuePair<string, string> ("username", usuario.Text),
+						new KeyValuePair<string, string> ("user", usuario.Text),
 						new KeyValuePair<string, string> ("password", clave.Text)
 					});
 
-					using (var response = await client.PostAsync ("http://192.168.1.254", content)) {
+					using (var response = await client.PostAsync ("http://104.42.52.205/mobile/login", content)) {
 						using (var responseContent = response.Content) {
 							var result = await responseContent.ReadAsStringAsync ();
 							string a=result.ToString();
-							if (a.Equals("Si") || a.Equals("si")){
+							if (a.Equals("{\"status\":\"ok\"}")){
 								await DisplayAlert ("Respuesta del servidor", result, "OK", "");
 								var todoPage = new Contenido (); // so the new page shows correct data
 								await Navigation.PushAsync (todoPage);

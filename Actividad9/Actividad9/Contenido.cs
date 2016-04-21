@@ -7,7 +7,7 @@ namespace Actividad9
 	{
 		public Contenido ()
 		{
-
+			
 		}
 	}
 }
