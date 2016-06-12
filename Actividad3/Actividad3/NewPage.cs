@@ -4,13 +4,13 @@ using Xamarin.Forms;
 
 namespace Actividad3
 {
-	public class NewPage : ContentPage
+	public class Page2 : ContentPage
 	{
-		public NewPage ()
+		public Page2 (string a)
 		{
 			Content = new StackLayout { 
 				Children = {
-					new Label { Text = "Hello ContentPage" }
+					new Label { Text = a }
 				}
 			};
 		}

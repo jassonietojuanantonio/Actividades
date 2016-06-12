@@ -4,17 +4,14 @@ using Xamarin.Forms;
 
 namespace Actividad3
 {
-	public class MyPage : ContentPage
+	public class NewPage
 	{
-		public MyPage ()
-		{
-			Content = new StackLayout { 
-				Children = {
-					new Label { Text = "Hello ContentPage" }
-				}
-			};
+		public static Page GetMainPage ()
+		{	
+			return new NavigationPage (new App());
 		}
 	}
+
 }
 
 
