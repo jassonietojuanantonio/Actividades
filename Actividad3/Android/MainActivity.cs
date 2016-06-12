@@ -22,7 +22,7 @@ namespace Actividad3.Android
 
 			Xamarin.Forms.Forms.Init (this, bundle);
 
-			SetPage(App.GetMainPage ());
+			SetPage(NewPage.GetMainPage ());
 		}
 	}
 }
