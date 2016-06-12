@@ -1,54 +1,78 @@
-﻿using System;
-
+﻿using System.Threading.Tasks;
+using System.Net;
+using System.IO;
+using System.Net.Http;
 using Xamarin.Forms;
-using System.Collections.Generic;
-
+using System.Json;
 
 namespace Actividad12
 {
-	public class App : Application
+	public class App : ContentPage
 	{
-		public App ()
+		public class Weather
 		{
-
-			var button = new Button {
-				Text = "click"
-			};
-
-			var label = new Label ();
-
-			button.Clicked += async (sender, e) => {
-				var result = await DependencyService.Get<IScan>().Scan();
-				label.Text = result;
-			};
-
-
-			// The root page of your application
-			MainPage = new ContentPage {
-				Content = new StackLayout {
-					VerticalOptions = LayoutOptions.Center,
-					Children = {
-						button,
-						label
-					}
-				}
-			};
+			public string Title { get; set; }
+			public string Temperature { get; set; }
+			public string Wind { get; set; }
+			public string Humidity { get; set; }
+			public string Visibility { get; set; }
+			public string Sunrise { get; set; }
+			public string Sunset { get; set; }
 		}
-
-		protected override void OnStart ()
+		public class DataService
 		{
-			// Handle when your app starts
+			public static async Task<dynamic> getDataFromService(string queryString)
+			{
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(queryString);
+
+				var response = await request.GetResponseAsync().ConfigureAwait(false);
+				var stream = response.GetResponseStream();
+
+				var streamReader = new StreamReader(stream);
+				string responseText = streamReader.ReadToEnd();
+
+				dynamic data = responseText;
+
+				return data;
+			}
+
 		}
-
-		protected override void OnSleep ()
+		public static async Task<Weather> GetWeather(string zipCode)
 		{
-			// Handle when your app sleeps
-		}
+			string queryString = 
+				"https://query.yahooapis.com/v1/public/yql?q=select+*+from+weather.forecast+where+location=" +
+             zipCode + "&format=json";
 
-		protected override void OnResume ()
-		{
-			// Handle when your app resumes
+
+			dynamic results = await DataService.getDataFromService(queryString).ConfigureAwait(false);
+
+			dynamic weatherOverview = results["query"]["results"]["channel"];
+
+			if ((string)weatherOverview["description"] != "Yahoo! Weather Error")
+			{
+				Weather weather = new Weather();
+
+				weather.Title = (string)weatherOverview["description"];
+
+				dynamic wind = weatherOverview["wind"];
+				weather.Temperature = (string)wind["chill"];
+				weather.Wind = (string)wind["speed"];
+
+				dynamic atmosphere = weatherOverview["atmosphere"];
+				weather.Humidity = (string)atmosphere["humidity"];
+				weather.Visibility = (string)atmosphere["visibility"];
+
+				dynamic astronomy = weatherOverview["astronomy"];
+				weather.Sunrise = (string)astronomy["sunrise"];
+				weather.Sunset = (string)astronomy["sunset"];
+
+				return weather;
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
-}
 
+}
